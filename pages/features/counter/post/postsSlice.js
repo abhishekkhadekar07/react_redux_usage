@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, nanoid } from "@reduxjs/toolkit";
 
 const initialState = [
   {
@@ -11,17 +11,35 @@ const initialState = [
     title: "watch dc",
     content: "it has superman flash and arrow ",
   },
-];
+]
 
 const postsSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
-    postAdded(state, action) {
-      state.push(action.payload);
-    },
-  },
-});
+    postAdded: {
+      reducer(state, action) {
+        state.push(action.payload)
+      },
+      prepare(title, content) {
+        return {
+          payload: {
+            id: nanoid(),
+            title,
+            content
+          }
+        }
+      }
+    }
+  }
+})
+
+//   reducers: {
+//     postAdded(state, action) {
+//       state.push(action.payload);
+//     },
+//   },
+// });
 export const selectAllPosts = (state) => state.posts;
 export const { postAdded } = postsSlice.actions;
 
